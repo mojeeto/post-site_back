@@ -17,6 +17,7 @@ export const generalErrorHandling: MiddlewareErrorType = (
 ) => {
   res.status(err.status).json({
     errorMessages: err.validationErrors,
+    message: err.message,
   });
 };
 

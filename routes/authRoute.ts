@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { putUser } from "../controller/authController";
+import { putUser, signInUser } from "../controller/authController";
 import { body } from "express-validator";
 import User from "../model/User";
 
@@ -38,6 +38,26 @@ authRouter.put(
     }),
   ],
   putUser
+);
+
+authRouter.post(
+  "/login",
+  [
+    body("email")
+      .notEmpty()
+      .withMessage("Email is empty!")
+      .trim()
+      .normalizeEmail()
+      .isEmail()
+      .withMessage("Email is not correct!"),
+    body("password")
+      .trim()
+      .notEmpty()
+      .withMessage("Password is empty!")
+      .isString()
+      .withMessage("Password must be string."),
+  ],
+  signInUser
 );
 
 export default authRouter;
