@@ -5,6 +5,7 @@ import { compare, hash } from "bcryptjs";
 import User from "../model/User";
 import { sign } from "jsonwebtoken";
 import env from "../utils/envalid";
+import { JWT_PAYLOAD } from "../middleware/isAuthenticate";
 
 export const putUser: ControllerType = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -53,12 +54,12 @@ export const signInUser: ControllerType = async (req, res, next) => {
       error.status = 404;
       return next(error);
     }
-    const token = sign(
-      {
-        userId: user._id,
-      },
-      env.JWT_SECERT
-    );
+    const payload: JWT_PAYLOAD = {
+      userId: user._id,
+    };
+    const token = sign(payload, env.JWT_SECERT, {
+      expiresIn: "1h",
+    });
     res.json({
       message: "user found!",
       user,
