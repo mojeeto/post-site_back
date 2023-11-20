@@ -1,4 +1,10 @@
-import { model, Schema, Document, PopulatedDoc } from "mongoose";
+import {
+  model,
+  Schema,
+  Document,
+  PopulatedDoc,
+  PopulateOption,
+} from "mongoose";
 import { IPost } from "./Post";
 
 export interface IUser extends Document {

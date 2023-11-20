@@ -106,3 +106,43 @@ export const updatePost: ControllerType = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deletePost: ControllerType = async (req, res, next) => {
+  const { postId } = req.params;
+  try {
+    const user = await User.findOne({ _id: req.userId });
+    if (!user) {
+      const error = new Error("Please authentication first!") as CustomError;
+      error.status = 403;
+      throw error;
+    }
+    const post = await Post.findOneAndDelete({ _id: postId, creator: user });
+    if (!post) {
+      const error = new Error("Post not found!") as CustomError;
+      error.status = 404;
+      throw error;
+    }
+
+    // TODO fix updating user.posts
+    /* user.updateOne({
+      $pull: {
+        posts: {
+          _id: post._id,
+        },
+      },
+    }); */
+
+    res.json({
+      status: "deleted!",
+      success: true,
+      message: "post deleted!",
+    });
+  } catch (err: unknown) {
+    const error = new Error("Error while deleting post") as CustomError;
+    if (IsCustomError(err)) {
+      error.status = err.status;
+      error.message = err.message;
+    }
+    next(error);
+  }
+};

@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { getPosts, putPost, updatePost } from "../controller/postController";
+import {
+  deletePost,
+  getPosts,
+  putPost,
+  updatePost,
+} from "../controller/postController";
 import { body } from "express-validator";
 import { multerMiddleware } from "../middleware/parserMiddleware";
 
@@ -24,6 +29,6 @@ postRouter.patch(
   ],
   updatePost
 ); // update a post
-postRouter.delete("/post/:postId"); // delete a post
+postRouter.delete("/post/:postId", deletePost); // delete a post
 
 export default postRouter;
