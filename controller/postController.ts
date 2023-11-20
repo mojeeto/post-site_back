@@ -123,14 +123,8 @@ export const deletePost: ControllerType = async (req, res, next) => {
       throw error;
     }
 
-    // TODO fix updating user.posts
-    /* user.updateOne({
-      $pull: {
-        posts: {
-          _id: post._id,
-        },
-      },
-    }); */
+    user.posts.pull(post);
+    await user.save();
 
     res.json({
       status: "deleted!",

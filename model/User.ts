@@ -4,6 +4,7 @@ import {
   Document,
   PopulatedDoc,
   PopulateOption,
+  Types,
 } from "mongoose";
 import { IPost } from "./Post";
 
@@ -11,7 +12,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  posts: PopulatedDoc<IPost & Document>[];
+  posts: Types.DocumentArray<PopulatedDoc<IPost & Document>>;
 }
 
 const userSchema = new Schema<IUser>(
