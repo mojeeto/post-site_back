@@ -61,8 +61,13 @@ export const signInUser: ControllerType = async (req, res, next) => {
       expiresIn: "1h",
     });
     res.json({
+      success: true,
+      status: "founded",
       message: "user found!",
-      user,
+      user: {
+        email: user.email,
+        name: user.name,
+      },
       token,
     });
   } catch (err) {

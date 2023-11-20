@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getPosts, putPost } from "../controller/postController";
+import { getPosts, putPost, updatePost } from "../controller/postController";
 import { body } from "express-validator";
 import { multerMiddleware } from "../middleware/parserMiddleware";
 
@@ -15,7 +15,15 @@ postRouter.put(
   ],
   putPost
 ); // create new post
-postRouter.patch("/post/:postId"); // update a post
+postRouter.patch(
+  "/post/:postId",
+  multerMiddleware,
+  [
+    body("title").notEmpty().withMessage("title is empty"),
+    body("content").notEmpty().withMessage("content is empty"),
+  ],
+  updatePost
+); // update a post
 postRouter.delete("/post/:postId"); // delete a post
 
 export default postRouter;

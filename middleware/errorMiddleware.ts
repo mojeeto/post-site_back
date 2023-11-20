@@ -9,6 +9,12 @@ export type CustomError = {
   validationErrors: ValidationError[];
 } & Error;
 
+export const IsCustomError = (obj: CustomError | any): obj is CustomError => {
+  return (
+    obj && Object.keys(obj).includes("status") && typeof obj.status === "number"
+  );
+};
+
 export const generalErrorHandling: MiddlewareErrorType = (
   err,
   req,
