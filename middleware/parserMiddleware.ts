@@ -19,7 +19,7 @@ parserMiddleware.use(
         cb(null, new Date().toISOString() + file.originalname);
       },
       destination(req, file, cb) {
-        cb(null, path.join(require.main!.path, "images"));
+        cb(null, "images");
       },
     }),
   }).single("postImage")

@@ -2,6 +2,7 @@ import { verify } from "jsonwebtoken";
 import { MiddlewareType } from ".";
 import { CustomError } from "./errorMiddleware";
 import env from "../utils/envalid";
+import User from "../model/User";
 
 const BARBER = "Barber ";
 const HEADER_KEY = "Authorization";
@@ -17,10 +18,13 @@ export const isAuthenticate: MiddlewareType = async (req, res, next) => {
     error.status = 403;
     return next(error);
   }
-  const token = header_value.replace(BARBER, "");
   try {
+    const token = header_value.replace(BARBER, "");
     const decodedToken = verify(token, env.JWT_SECERT);
-    req.userId = (decodedToken as JWT_PAYLOAD).userId;
+    const userId = (decodedToken as JWT_PAYLOAD).userId;
+    const user = await User.findOne({ _id: userId });
+    if (!user) throw Error;
+    req.userId = userId;
     next();
   } catch (err) {
     res.status(403).json({

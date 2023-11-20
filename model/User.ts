@@ -5,7 +5,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  posts?: PopulatedDoc<IPost & Document>[];
+  posts: PopulatedDoc<IPost & Document>[];
 }
 
 const userSchema = new Schema<IUser>(
