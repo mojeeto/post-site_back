@@ -5,7 +5,10 @@ import Post from "../model/Post";
 import User from "../model/User";
 
 export const getPosts: ControllerType = async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().populate({
+    path: "creator",
+    select: ["name", "email"],
+  });
   res.json({
     posts,
   });
