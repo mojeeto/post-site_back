@@ -22,7 +22,7 @@ export const generalErrorHandling: MiddlewareErrorType = (
   next
 ) => {
   res.status(err.status || 500).json({
-    errorMessages: err.validationErrors,
+    validationErrors: err.validationErrors,
     message: err.message,
   });
 };

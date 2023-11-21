@@ -20,7 +20,9 @@ export const putUser: ControllerType = async (req, res, next) => {
     const hashedPassword = await hash(password, 16);
     const user = new User({ name, email, password: hashedPassword });
     user.save();
-    res.json({
+    res.status(201).json({
+      status: "Created!",
+      success: true,
       message: "User successfully created!",
     });
   } catch (err) {

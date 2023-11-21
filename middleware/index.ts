@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Router } from "express";
 import parserMiddleware from "./parserMiddleware";
-import errorMiddleware, { CustomError } from "./errorMiddleware";
+import { CustomError } from "./errorMiddleware";
+import cors from "cors";
 
 export type MiddlewareType = (
   req: Request,
@@ -18,6 +19,7 @@ export type MiddlewareErrorType = (
 
 const rootMiddleware = Router();
 
+rootMiddleware.use(cors());
 rootMiddleware.use(parserMiddleware);
 
 export default rootMiddleware;
