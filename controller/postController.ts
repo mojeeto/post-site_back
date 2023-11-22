@@ -52,6 +52,7 @@ export const putPost: ControllerType = async (req, res, next) => {
     res.status(201).json({
       message: "Post Created!",
       success: true,
+      post,
     });
   } catch (err) {
     const error = new Error("Error while creating post") as CustomError;
@@ -92,10 +93,12 @@ export const updatePost: ControllerType = async (req, res, next) => {
     post.content = content;
     if (imageFile) post.imagePath = imageFile.path;
     await post.save();
+    const updatedPost = await Post.findOne({ _id: post }).populate("creator");
     res.json({
       sucess: true,
       status: "updated",
       message: "Post succesfully updated!",
+      post: updatedPost,
     });
   } catch (err: unknown) {
     const error = new Error("Error while update post!") as CustomError;
