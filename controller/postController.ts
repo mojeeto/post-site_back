@@ -3,6 +3,7 @@ import { ControllerType } from ".";
 import { CustomError, IsCustomError } from "../middleware/errorMiddleware";
 import Post from "../model/Post";
 import User from "../model/User";
+import { io } from "../app";
 
 export const getPosts: ControllerType = async (req, res, next) => {
   const posts = await Post.find().populate({
@@ -49,6 +50,7 @@ export const putPost: ControllerType = async (req, res, next) => {
     await post.save();
     user.posts.push(post);
     await user.save();
+    io.emit("posts", { action: "create", post });
     res.status(201).json({
       message: "Post Created!",
       success: true,
@@ -94,6 +96,7 @@ export const updatePost: ControllerType = async (req, res, next) => {
     if (imageFile) post.imagePath = imageFile.path;
     await post.save();
     const updatedPost = await Post.findOne({ _id: post }).populate("creator");
+    io.emit("posts", { action: "update", post });
     res.json({
       sucess: true,
       status: "updated",
@@ -129,6 +132,7 @@ export const deletePost: ControllerType = async (req, res, next) => {
     user.posts.pull(post);
     await user.save();
 
+    io.emit("posts", { action: "delete", post });
     res.json({
       status: "deleted!",
       success: true,
